@@ -20,6 +20,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject bulletObj = null;
 
+    private bool move = false;
+    private float moveHorizon = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +32,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(move==true)
         PlayerMove();
 
         if(Input.GetButtonDown("Jump"))
@@ -44,7 +48,8 @@ public class Player : MonoBehaviour
 
     private void PlayerMove()
     {
-        float h = Input.GetAxis("Horizontal");
+        //   float h = Input.GetAxis("Horizontal");
+        float h = moveHorizon;
         float playerSpeed = h * moveSpeed * Time.deltaTime;
         Vector3 vector3 = new Vector3();
         vector3.x = playerSpeed;
@@ -106,5 +111,23 @@ public class Player : MonoBehaviour
         Instantiate(bulletObj, bulletPos.transform.position, quaternion).GetComponent<Bullet>().InstantiateBullet(direction);
     }
 
+    public void OnMove(bool _right)
+    {
+        if (_right)
+        {
+            moveHorizon = 1;
+        }
+        else
+        {
+            moveHorizon =- 1;
+        }
+        move = true;
+    }
+
+    public void OffMove()
+    {
+        moveHorizon = 0;
+        move = false;
+    }
 
 }
